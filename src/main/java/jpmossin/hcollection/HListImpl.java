@@ -14,7 +14,7 @@ public class HListImpl<E> implements HList<E> {
     }
 
     public HListImpl() {
-        this.wrappedList = Collections.emptyList();
+        this.wrappedList = new LinkedList<>();
     }
 
 
@@ -83,7 +83,7 @@ public class HListImpl<E> implements HList<E> {
         Map<R, HList<E>> grouped = new HashMap<>();
         this.forEach(e -> {
             R key = keyFunc.apply(e);
-            HList<E> elemGroup = grouped.getOrDefault(e, new HListImpl<>());
+            HList<E> elemGroup = grouped.getOrDefault(key, new HListImpl<>());
             elemGroup.add(e);
             grouped.put(key, elemGroup);
         });
