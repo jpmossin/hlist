@@ -6,6 +6,10 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+/**
+ * A list with some useful Higher-order functions
+ * @param <E> Element type
+ */
 public interface HList<E> extends List<E> {
 
     /**

@@ -223,11 +223,11 @@ public class HListImpl<E> implements HList<E> {
     }
 
     private <A> HListImpl<A> empty() {
-        if (wrappedList instanceof LinkedList) {
-            return new HListImpl<>(new LinkedList<>());
+        if (wrappedList instanceof RandomAccess) {
+            return new HListImpl<>(new ArrayList<>());
         }
         else {
-            return new HListImpl<>(new ArrayList<>());
+            return new HListImpl<>(new LinkedList<>());
         }
     }
 

@@ -2,51 +2,46 @@ package jpmossin.hcollection;
 
 import org.junit.Test;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
+import java.util.Map;
+import java.util.Optional;
 
 import static java.util.Arrays.asList;
-import static jpmossin.hcollection.HCollection.hlist;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class HListTest {
 
-    final HListImpl<Integer> oneToFive = hlist(asList(1, 2, 3, 4, 5));
+    final HListImpl<Integer> oneToFour = new HListImpl<>(asList(1, 2, 3, 4));
 
     @Test
     public void mapAppliesFuncToEachElem() {
-        List<Integer> doubled = oneToFive.map(e -> e * 2);
-        Iterator<Integer> oneToFiveIt = oneToFive.iterator();
-        Iterator<Integer> doubledIt = doubled.iterator();
-        while (oneToFiveIt.hasNext()) {
-            assertThat(doubledIt.next(), equalTo(2 * oneToFiveIt.next()));
-        }
-        assertThat(doubled.size(), equalTo(oneToFive.size()));
+        List<Integer> doubled = oneToFour.map(e -> e * 2);
+        assertThat(doubled, equalTo(asList(2, 4, 6, 8)));
     }
 
     @Test
     public void flatMapAppliesFuncToEachElemAndFlattensResult() {
-        List<Integer> test = oneToFive.flatMap(e -> asList(e, e * 2));
-        assertThat(test.size(), equalTo(2 * oneToFive.size()));
-        for (int i=0; i<oneToFive.size(); i++) {
-            assertThat(oneToFive.get(i), equalTo(test.get(2 * i)));
-            assertThat(2 * oneToFive.get(i), equalTo(test.get(2 * i + 1)));
+        List<Integer> test = oneToFour.flatMap(e -> asList(e, e * 2));
+        assertThat(test.size(), equalTo(2 * oneToFour.size()));
+        for (int i = 0; i< oneToFour.size(); i++) {
+            assertThat(oneToFour.get(i), equalTo(test.get(2 * i)));
+            assertThat(2 * oneToFour.get(i), equalTo(test.get(2 * i + 1)));
         }
     }
 
     @Test
     public void filterShouldKeepOnlyMatchingElements() {
-        List<Integer> filteredNums = oneToFive.filter(e -> e % 2 == 0);
-        assertThat(filteredNums, equalTo(asList(2, 4)));
+        List<Integer> filteredNums = oneToFour.filter(e -> e % 2 == 1);
+        assertThat(filteredNums, equalTo(asList(1, 3)));
     }
 
 
     @Test
     public void reduceComputesAReductionOfAllElems() {
-        Integer sum = oneToFive.reduce((acc, e) -> acc + e, 0);
-        assertThat(sum, equalTo(15));
+        Integer sum = oneToFour.reduce((acc, e) -> acc + e, 0);
+        assertThat(sum, equalTo(10));
     }
 
     @Test
@@ -58,6 +53,42 @@ public class HListTest {
     @Test
     public void reduceComputesResultLeftToRight() {
         // for a non-associate function the result will depend on evaluation order
-        
+        Integer sumAsc = oneToFour.reduce((acc, e) -> e - acc, 0);
+        assertThat(sumAsc, equalTo(2));
+        Integer sumDesc = new HListImpl<>(asList(4, 3, 2, 1)).reduce((acc, e) -> e - acc, 0);
+        assertThat(sumDesc, equalTo(-2));
+    }
+
+    @Test
+    public void findReturnsFirstFoundElemWhenMatch() {
+        Optional<Integer> found = oneToFour.find(e -> e % 2 == 0);
+        assertThat(found.get(), equalTo(2));
+    }
+
+    @Test
+    public void findReturnsEmptyOptionalWhenNoMatch() {
+        Optional<Integer> found = oneToFour.find(e -> e % 2 == 10);
+        assertThat(found.isPresent(), is(false));
+    }
+
+    @Test
+    public void allReturnsTrueWhenAllElemsMatch() {
+        boolean allLessThanTen = oneToFour.all(e -> e < 10);
+        assertThat(allLessThanTen, is(true));
+    }
+
+    @Test
+    public void allReturnsFalseIfNotAllElemsMatch() {
+        boolean allLessThanThree = oneToFour.all(e -> e < 4);
+        assertThat(allLessThanThree, is(false));
+    }
+
+    @Test
+    public void groupByCorrectlyGroupsElemsByKey() {
+        Map<Integer, HList<Integer>> grouped = oneToFour.groupBy(e -> e % 2);
+        assertThat(grouped.size(), equalTo(2));
+        assertThat(grouped.get(0), equalTo(asList(2, 4)));
+        assertThat(grouped.get(1), equalTo(asList(1, 3)));
+
     }
 }
