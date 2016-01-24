@@ -1,0 +1,1 @@
+A java.util.List with some useful Higher-order functions
