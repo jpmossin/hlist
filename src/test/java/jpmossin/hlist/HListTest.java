@@ -1,4 +1,4 @@
-package jpmossin.hcollection;
+package jpmossin.hlist;
 
 import org.junit.Test;
 

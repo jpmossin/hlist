@@ -1,4 +1,4 @@
-package jpmossin.hcollection;
+package jpmossin.hlist;
 
 import java.util.*;
 import java.util.function.BiFunction;
@@ -17,6 +17,9 @@ public class HListImpl<E> implements HList<E> {
         this.wrappedList = new LinkedList<>();
     }
 
+    public static <A> HList<A> hlist(List<A> list) {
+        return new HListImpl<>(list);
+    }
 
     @Override
     public <R> HListImpl<R> map(Function<? super E, ? extends R> func) {

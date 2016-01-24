@@ -1,4 +1,4 @@
-package jpmossin.hcollection;
+package jpmossin.hlist;
 
 import java.util.List;
 import java.util.Map;
