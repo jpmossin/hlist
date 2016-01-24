@@ -1,6 +1,6 @@
 [![Circle CI](https://circleci.com/gh/jpmossin/hlist.svg?style=svg)](https://circleci.com/gh/jpmossin/hlist)
 
-A java.util.List with some useful Higher-order functions.
+A java.util.List with some useful Higher-order [functions](https://github.com/jpmossin/hlist/blob/master/src/main/java/jpmossin/hlist/HList.java).
 
 ```java
 int example = hlist(asList(1, 2, 3))
