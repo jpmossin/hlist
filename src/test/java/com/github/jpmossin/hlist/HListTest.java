@@ -1,4 +1,4 @@
-package jpmossin.hlist;
+package com.github.jpmossin.hlist;
 
 import org.junit.Test;
 
@@ -13,7 +13,7 @@ import static org.junit.Assert.assertThat;
 
 public class HListTest {
 
-    final HListImpl<Integer> oneToFour = new HListImpl<>(asList(1, 2, 3, 4));
+    final HList<Integer> oneToFour = new HListImpl<>(asList(1, 2, 3, 4));
 
     @Test
     public void mapAppliesFuncToEachElem() {
@@ -23,11 +23,11 @@ public class HListTest {
 
     @Test
     public void flatMapAppliesFuncToEachElemAndFlattensResult() {
-        List<Integer> test = oneToFour.flatMap(e -> asList(e, e * 2));
-        assertThat(test.size(), equalTo(2 * oneToFour.size()));
+        List<Integer> mapped = oneToFour.flatMap(e -> asList(e, e * 2));
+        assertThat(mapped.size(), equalTo(2 * oneToFour.size()));
         for (int i = 0; i< oneToFour.size(); i++) {
-            assertThat(oneToFour.get(i), equalTo(test.get(2 * i)));
-            assertThat(2 * oneToFour.get(i), equalTo(test.get(2 * i + 1)));
+            assertThat(oneToFour.get(i), equalTo(mapped.get(2 * i)));
+            assertThat(2 * oneToFour.get(i), equalTo(mapped.get(2 * i + 1)));
         }
     }
 

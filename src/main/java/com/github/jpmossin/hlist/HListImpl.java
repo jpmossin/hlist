@@ -1,4 +1,4 @@
-package jpmossin.hlist;
+package com.github.jpmossin.hlist;
 
 import java.util.*;
 import java.util.function.BiFunction;
