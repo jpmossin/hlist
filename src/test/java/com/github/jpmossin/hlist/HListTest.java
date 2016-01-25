@@ -24,11 +24,7 @@ public class HListTest {
     @Test
     public void flatMapAppliesFuncToEachElemAndFlattensResult() {
         List<Integer> mapped = oneToFour.flatMap(e -> asList(e, e * 2));
-        assertThat(mapped.size(), equalTo(2 * oneToFour.size()));
-        for (int i = 0; i< oneToFour.size(); i++) {
-            assertThat(oneToFour.get(i), equalTo(mapped.get(2 * i)));
-            assertThat(2 * oneToFour.get(i), equalTo(mapped.get(2 * i + 1)));
-        }
+        assertThat(mapped, equalTo(asList(1, 2, 2, 4, 3, 6, 4, 8)));
     }
 
     @Test
@@ -89,6 +85,5 @@ public class HListTest {
         assertThat(grouped.size(), equalTo(2));
         assertThat(grouped.get(0), equalTo(asList(2, 4)));
         assertThat(grouped.get(1), equalTo(asList(1, 3)));
-
     }
 }
