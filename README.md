@@ -8,3 +8,12 @@ int example = hlist(asList(1, 2, 3))
         .filter(e -> e > 2)
         .reduce((sum, e) -> sum + e, 0);
 ```
+
+To use:
+```xml
+<dependency>
+    <groupId>com.github.jpmossin</groupId>
+    <artifactId>hlist</artifactId>
+    <version>${hlist.version}</version>
+</dependency>
+```
