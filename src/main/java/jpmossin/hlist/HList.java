@@ -20,7 +20,7 @@ public interface HList<E> extends List<E> {
      * @param <R>  The element type of the new list
      * @return the new list
      */
-    <R> HListImpl<R> map(Function<? super E, ? extends R> func);
+    <R> HList<R> map(Function<? super E, ? extends R> func);
 
     /**
      * Create a new list by applying a function to transform each element
@@ -30,7 +30,7 @@ public interface HList<E> extends List<E> {
      * @param <R>  The element type of the new list
      * @return the new list
      */
-    <R> HListImpl<R> flatMap(Function<? super E, List<? extends R>> func);
+    <R> HList<R> flatMap(Function<? super E, List<? extends R>> func);
 
     /**
      * Create a new list consisting of the elements of this list that match
@@ -40,7 +40,7 @@ public interface HList<E> extends List<E> {
      *                  should be included
      * @return the new list
      */
-    HListImpl<E> filter(Function<? super E, Boolean> predicate);
+    HList<E> filter(Function<? super E, Boolean> predicate);
 
 
     /**
