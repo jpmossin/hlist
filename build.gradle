@@ -42,7 +42,7 @@ uploadArchives {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
             repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
-                authentication(userName: sonatypeUsername, password: sonatypePassword)
+                authentication(userName: "$System.env.SONATYPE_USER", password: "$System.env.SONATYPE_PASSWORD")
             }
 
             pom.project {
