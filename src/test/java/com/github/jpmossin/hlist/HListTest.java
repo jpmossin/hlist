@@ -1,11 +1,13 @@
 package com.github.jpmossin.hlist;
 
+import com.github.jpmossin.hlist.HList.Tuple2;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.github.jpmossin.hlist.HListImpl.hlist;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -13,7 +15,7 @@ import static org.junit.Assert.assertThat;
 
 public class HListTest {
 
-    final HList<Integer> oneToFour = new HListImpl<>(asList(1, 2, 3, 4));
+    final HList<Integer> oneToFour = hlist(asList(1, 2, 3, 4));
 
     @Test
     public void mapAppliesFuncToEachElem() {
@@ -48,7 +50,7 @@ public class HListTest {
 
     @Test
     public void reduceComputesResultLeftToRight() {
-        // for a non-associate function the result will depend on evaluation order
+        // for a non-associative function the result will depend on evaluation order
         Integer sumAsc = oneToFour.reduce((acc, e) -> e - acc, 0);
         assertThat(sumAsc, equalTo(2));
         Integer sumDesc = new HListImpl<>(asList(4, 3, 2, 1)).reduce((acc, e) -> e - acc, 0);
@@ -86,4 +88,19 @@ public class HListTest {
         assertThat(grouped.get(0), equalTo(asList(2, 4)));
         assertThat(grouped.get(1), equalTo(asList(1, 3)));
     }
+
+    @Test
+    public void zipCreatesTheCorrectPairsOfElements() {
+        List<Integer> multByTen = oneToFour.map(e -> e * 10);
+        List<Tuple2<Integer, Integer>> zipped = oneToFour.zip(multByTen);
+        zipped.forEach(tuple ->
+                assertThat(tuple.second, equalTo(tuple.first * 10))
+        );
+    }
+
+    @Test
+    public void lengthOfZippedListIsEqualToShorter() {
+        assertThat(oneToFour.zip(asList(1, 2)).size(), equalTo(2));
+    }
+
 }

@@ -94,6 +94,16 @@ public class HListImpl<E> implements HList<E> {
     }
 
 
+    @Override
+    public <B> HList<Tuple2<E, B>> zip(List<B> other) {
+        HList<Tuple2<E, B>> zipped = empty();
+        Iterator<E> elemsA = this.iterator();
+        Iterator<B> elemsB = other.iterator();
+        while (elemsA.hasNext() && elemsB.hasNext()) {
+            zipped.add(new Tuple2<>(elemsA.next(), elemsB.next()));
+        }
+        return zipped;
+    }
 
     @Override
     public int size() {

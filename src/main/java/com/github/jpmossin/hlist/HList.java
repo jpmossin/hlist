@@ -8,6 +8,7 @@ import java.util.function.Function;
 
 /**
  * A list with some useful Higher-order functions
+ *
  * @param <E> Element type
  */
 public interface HList<E> extends List<E> {
@@ -84,5 +85,54 @@ public interface HList<E> extends List<E> {
      */
     <R> Map<R, HList<E>> groupBy(Function<? super E, ? extends R> keyFunc);
 
+    /**
+     * Create a list where the i'th element is a tuple
+     * containing the i'th element of this list
+     * and the i'th element of the other list.
+     * The length of the new list will be equal to the
+     * shorter of the two lists to zip:
+     * [1,2,3].zip([4,5]) = [(1,4), (2,5)]
+     *
+     * @param other The list to combine with this list
+     * @param <B>   Element type of other list
+     * @return the zipped list
+     */
+    <B> HList<Tuple2<E, B>> zip(List<B> other);
 
+
+    /**
+     * A pair of two objects
+     * @param <A> Element type of first object
+     * @param <B> Element type of second object
+     */
+    final class Tuple2<A, B> {
+        public final A first;
+        public final B second;
+
+        public Tuple2(A first, B second) {
+            this.first = first;
+            this.second = second;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("Tuple2(%s, %s)", first, second);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Tuple2<?, ?> tuple2 = (Tuple2<?, ?>) o;
+            return (first != null ? first.equals(tuple2.first) : tuple2.first == null) &&
+                    (second != null ? second.equals(tuple2.second) : tuple2.second == null);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = first != null ? first.hashCode() : 0;
+            result = 31 * result + (second != null ? second.hashCode() : 0);
+            return result;
+        }
+    }
 }
